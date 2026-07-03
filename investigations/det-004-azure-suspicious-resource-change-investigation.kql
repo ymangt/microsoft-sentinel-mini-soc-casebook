@@ -1,0 +1,18 @@
+// Investigation for DET-004
+// Replace the correlation ID with the alert correlation ID.
+
+let alert_correlation_id = "00000000-0000-0000-0000-000000000000";
+AzureActivity
+| where TimeGenerated >= ago(14d)
+| where CorrelationId == alert_correlation_id
+| order by TimeGenerated asc
+| project
+    TimeGenerated,
+    OperationNameValue,
+    ActivityStatusValue,
+    Caller,
+    CallerIpAddress,
+    ResourceGroup,
+    ResourceId,
+    Authorization,
+    Properties

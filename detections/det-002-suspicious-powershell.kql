@@ -1,0 +1,39 @@
+// DET-002: Suspicious PowerShell execution
+// Data source: Microsoft Sentinel watchlist alias lab_endpoint_processes
+// Purpose: Detect encoded commands, hidden windows, and download-style PowerShell behavior.
+
+let lookback = 1d;
+_GetWatchlist('lab_endpoint_processes')
+| project
+    TimeGenerated = todatetime(EventTime),
+    DeviceName = tostring(DeviceName),
+    AccountName = tostring(AccountName),
+    FileName = tostring(FileName),
+    ProcessCommandLine = tostring(ProcessCommandLine),
+    InitiatingProcessFileName = tostring(InitiatingProcessFileName),
+    InitiatingProcessCommandLine = tostring(InitiatingProcessCommandLine),
+    SHA256 = tostring(SHA256)
+| where TimeGenerated >= ago(lookback)
+| where FileName in~ ("powershell.exe", "pwsh.exe")
+| extend SuspiciousReason = case(
+    ProcessCommandLine has_any ("-enc", "-encodedcommand", "FromBase64String"), "Encoded command",
+    ProcessCommandLine has_any ("IEX", "Invoke-Expression", "DownloadString", "WebClient", "Invoke-WebRequest", "curl "), "Download or execution cradle",
+    ProcessCommandLine has_any ("-nop", "-w hidden", "-windowstyle hidden", "-executionpolicy bypass"), "Evasion-style PowerShell flags",
+    "Review"
+)
+| where SuspiciousReason != "Review"
+| extend
+    Severity = case(SuspiciousReason == "Download or execution cradle", "High", "Medium"),
+    AlertReason = strcat(SuspiciousReason, " observed on ", DeviceName)
+| project
+    TimeGenerated,
+    Severity,
+    AlertReason,
+    SuspiciousReason,
+    DeviceName,
+    AccountName,
+    FileName,
+    ProcessCommandLine,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256

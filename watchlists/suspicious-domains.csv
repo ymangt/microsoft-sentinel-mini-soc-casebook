@@ -1,0 +1,4 @@
+Domain,Risk,Reason
+login-microsoft-security.example,High,Lookalike Microsoft sign-in domain used for phishing simulation
+secure-document-review.example,Medium,Document-themed phishing simulation domain
+m365-verify-session.example,Medium,Session verification lure simulation domain

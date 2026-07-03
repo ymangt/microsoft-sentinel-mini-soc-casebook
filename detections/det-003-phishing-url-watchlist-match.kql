@@ -1,0 +1,39 @@
+// DET-003: Phishing URL watchlist match
+// Data sources:
+// - lab_email_url_events
+// - lab_suspicious_domains
+// Purpose: Identify email URL events that match a suspicious-domain watchlist.
+
+let suspicious_domains =
+    _GetWatchlist('lab_suspicious_domains')
+    | project
+        Domain = tostring(SearchKey),
+        DomainRisk = tostring(Risk),
+        DomainReason = tostring(Reason);
+_GetWatchlist('lab_email_url_events')
+| project
+    TimeGenerated = todatetime(EventTime),
+    Recipient = tostring(Recipient),
+    Sender = tostring(Sender),
+    Subject = tostring(Subject),
+    Url = tostring(Url),
+    UrlDomain = tostring(UrlDomain),
+    Action = tostring(Action),
+    DeliveryLocation = tostring(DeliveryLocation)
+| lookup kind=inner suspicious_domains on $left.UrlDomain == $right.Domain
+| extend
+    Severity = case(Action =~ "Clicked", "High", Action =~ "Delivered", "Medium", "Low"),
+    AlertReason = strcat("Email URL matched suspicious domain: ", UrlDomain)
+| project
+    TimeGenerated,
+    Severity,
+    AlertReason,
+    Recipient,
+    Sender,
+    Subject,
+    Url,
+    UrlDomain,
+    DomainRisk,
+    DomainReason,
+    Action,
+    DeliveryLocation

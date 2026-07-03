@@ -1,0 +1,35 @@
+// DET-004: Suspicious Azure resource change
+// Data source: AzureActivity
+// Purpose: Surface high-risk Azure control-plane changes for analyst review.
+
+AzureActivity
+| where TimeGenerated >= ago(14d)
+| where OperationNameValue in~ (
+    "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE",
+    "MICROSOFT.AUTHORIZATION/ROLEASSIGNMENTS/WRITE",
+    "MICROSOFT.COMPUTE/VIRTUALMACHINES/WRITE",
+    "MICROSOFT.STORAGE/STORAGEACCOUNTS/WRITE"
+)
+| extend ActivityStatus = coalesce(ActivityStatusValue, ActivityStatus)
+| where ActivityStatus =~ "Success"
+| extend
+    Severity = case(
+        OperationNameValue =~ "MICROSOFT.AUTHORIZATION/ROLEASSIGNMENTS/WRITE", "High",
+        OperationNameValue =~ "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE", "Medium",
+        "Low"
+    ),
+    AlertReason = strcat("Azure control-plane change observed: ", OperationNameValue)
+| project
+    TimeGenerated,
+    Severity,
+    AlertReason,
+    OperationNameValue,
+    ActivityStatus,
+    Caller,
+    CallerIpAddress,
+    ResourceGroup,
+    ResourceProviderValue,
+    ResourceId,
+    SubscriptionId,
+    CorrelationId,
+    Properties

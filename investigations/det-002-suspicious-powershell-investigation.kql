@@ -1,0 +1,19 @@
+// Investigation for DET-002
+// Replace the device name and time window with values from the alert.
+
+let alert_device = "WS-023";
+let alert_time = datetime(2026-07-01T14:22:00Z);
+_GetWatchlist('lab_endpoint_processes')
+| project
+    TimeGenerated = todatetime(EventTime),
+    DeviceName = tostring(DeviceName),
+    AccountName = tostring(AccountName),
+    FileName = tostring(FileName),
+    ProcessCommandLine = tostring(ProcessCommandLine),
+    InitiatingProcessFileName = tostring(InitiatingProcessFileName),
+    InitiatingProcessCommandLine = tostring(InitiatingProcessCommandLine),
+    SHA256 = tostring(SHA256)
+| where DeviceName == alert_device
+| where TimeGenerated between ((alert_time - 30m) .. (alert_time + 30m))
+| order by TimeGenerated asc
+| project TimeGenerated, DeviceName, AccountName, InitiatingProcessFileName, FileName, ProcessCommandLine, SHA256

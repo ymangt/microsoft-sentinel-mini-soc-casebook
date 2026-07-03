@@ -1,0 +1,12 @@
+EventTime,AccountName,IPAddress,Location,Result,FailureReason,AppDisplayName
+2026-07-02T13:00:00Z,alex.chen@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:01:00Z,priya.shah@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:02:00Z,marco.rossi@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:03:00Z,sarah.nguyen@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:04:00Z,daniel.kim@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:05:00Z,alex.chen@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:06:00Z,priya.shah@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:07:00Z,marco.rossi@example.com,203.0.113.50,Toronto CA,Failure,Invalid password,Office 365
+2026-07-02T13:08:00Z,service.backup@example.com,198.51.100.25,Ottawa CA,Failure,Expired password,Azure Portal
+2026-07-02T13:11:00Z,service.backup@example.com,198.51.100.25,Ottawa CA,Success,,Azure Portal
+2026-07-02T14:21:00Z,sarah.nguyen@example.com,192.0.2.44,London CA,Success,,Office 365

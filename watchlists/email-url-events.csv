@@ -1,0 +1,6 @@
+EventTime,Recipient,Sender,Subject,Url,UrlDomain,Action,DeliveryLocation
+2026-07-02T12:43:00Z,alex.chen@example.com,notifications@secure-document-review.example,Shared payroll document,https://secure-document-review.example/review?id=1042,secure-document-review.example,Delivered,Inbox
+2026-07-02T12:47:00Z,alex.chen@example.com,notifications@secure-document-review.example,Shared payroll document,https://secure-document-review.example/review?id=1042,secure-document-review.example,Clicked,Inbox
+2026-07-02T12:50:00Z,priya.shah@example.com,no-reply@login-microsoft-security.example,Microsoft security verification,https://login-microsoft-security.example/verify,login-microsoft-security.example,Delivered,Junk
+2026-07-02T13:15:00Z,marco.rossi@example.com,updates@m365-verify-session.example,Action required for session,https://m365-verify-session.example/session,m365-verify-session.example,Blocked,Quarantine
+2026-07-02T14:02:00Z,sarah.nguyen@example.com,newsletter@example.net,Weekly team newsletter,https://example.net/newsletter,example.net,Delivered,Inbox

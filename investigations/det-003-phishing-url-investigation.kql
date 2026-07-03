@@ -1,0 +1,24 @@
+// Investigation for DET-003
+// Replace the domain with the alert domain.
+
+let alert_domain = "login-microsoft-security.example";
+_GetWatchlist('lab_email_url_events')
+| project
+    TimeGenerated = todatetime(EventTime),
+    Recipient = tostring(Recipient),
+    Sender = tostring(Sender),
+    Subject = tostring(Subject),
+    Url = tostring(Url),
+    UrlDomain = tostring(UrlDomain),
+    Action = tostring(Action),
+    DeliveryLocation = tostring(DeliveryLocation)
+| where UrlDomain == alert_domain
+| summarize
+    Recipients = make_set(Recipient, 50),
+    Senders = make_set(Sender, 20),
+    Subjects = make_set(Subject, 20),
+    Actions = make_set(Action, 10),
+    FirstSeen = min(TimeGenerated),
+    LastSeen = max(TimeGenerated),
+    EventCount = count()
+    by UrlDomain
