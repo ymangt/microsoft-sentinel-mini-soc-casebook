@@ -13,13 +13,15 @@ Deliverables:
 
 Deliverables:
 
-- Create or select an Azure subscription.
-- Create a dedicated resource group.
-- Create a Log Analytics workspace.
-- Enable Microsoft Sentinel.
+- Use the existing enabled `Azure for Students` subscription.
+- Use existing resource group `rg-sc200-sentinel-lab`.
+- Use existing Log Analytics workspace `law-sc200-sentinel-lab`.
+- Confirm Microsoft Sentinel is enabled.
 - Open Sentinel from the Microsoft Defender portal.
-- Install the Azure Activity solution from Content hub.
-- Connect the Azure Activity data connector.
+- Confirm or install the Azure Activity solution from Content hub.
+- Confirm or connect the Azure Activity data connector.
+- Generate one harmless Azure Activity event.
+- Validate ingestion with KQL.
 
 Screenshots:
 
