@@ -45,6 +45,7 @@ Before committing screenshots:
 - Hide subscription IDs if visible.
 - Hide tenant IDs if visible.
 - Hide personal email addresses if visible.
+- Hide public IP addresses if they can be tied back to you.
 - Hide billing pages and payment information.
 - Hide access tokens, secrets, connection strings, and API keys.
 

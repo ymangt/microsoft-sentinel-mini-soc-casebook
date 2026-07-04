@@ -14,6 +14,37 @@ Using Azure MCP, Codex confirmed:
 - The `SecurityInsights(law-sc200-sentinel-lab)` solution exists, which indicates Microsoft Sentinel is enabled.
 - No Azure Activity rows were returned in the current workspace during the initial check.
 
+## Actual Day 2 Outcome
+
+Azure Activity ingestion did not work immediately after the portal-based setup. The Azure Policy assignment was created, but the subscription diagnostic setting that actually forwards Activity Log categories into Log Analytics was missing.
+
+Troubleshooting confirmed:
+
+- The Azure Activity policy assignment existed.
+- No Azure Policy remediation task existed.
+- No `AzureActivity` rows existed in the Sentinel workspace over the previous 7 days.
+- The subscription diagnostic settings list was empty.
+- The resource group tag update existed in the native Azure Activity Log, proving the source event was generated.
+
+Fix applied:
+
+- Created a subscription diagnostic setting named `send-activity-to-law-sc200-sentinel-lab`.
+- Pointed it to `law-sc200-sentinel-lab`.
+- Enabled Activity Log categories: `Administrative`, `Security`, `ServiceHealth`, `Alert`, `Recommendation`, `Policy`, `Autoscale`, and `ResourceHealth`.
+- Generated a fresh control-plane event by updating the lab tag on `rg-sc200-sentinel-lab`.
+
+Validation result:
+
+- `AzureActivity` successfully returned rows in the Sentinel Log Analytics workspace.
+- The visible events included:
+  - `MICROSOFT.INSIGHTS/DIAGNOSTICSETTINGS/WRITE`
+  - `MICROSOFT.RESOURCES/SUBSCRIPTIONS/RESOURCEGROUPS/WRITE`
+- Each operation appeared with `Start` and `Success` statuses, which shows the operation lifecycle in Azure Activity logs.
+
+Analyst takeaway:
+
+This was an ingestion pipeline issue, not a KQL issue. The correct troubleshooting sequence was to validate the Sentinel query, confirm the policy assignment, check remediation, check diagnostic settings, confirm the native Azure Activity Log source event, and then rerun KQL after the diagnostic setting was fixed.
+
 ## What You Need To Do In The Portal
 
 Use the portal for learning and screenshots. Codex can query and document, but recruiter-facing evidence should show that you worked through the Sentinel interface.
@@ -193,7 +224,12 @@ Day 2 is complete when you have:
 - Generated one harmless Azure control-plane event.
 - Run one `AzureActivity` KQL query.
 - Captured at least 4 screenshots.
+- Documented the ingestion troubleshooting path if the connector required manual diagnostic setting repair.
 
 ## What To Tell An Interviewer
 
 > I started by verifying the Sentinel workspace and data connector instead of jumping straight into detections. I wanted the lab to show the basic SOC engineering workflow: confirm the workspace, confirm ingestion, generate a safe test event, validate data with KQL, and only then build detections.
+
+If asked about the ingestion issue:
+
+> The Azure Activity connector initially looked configured from the portal, but no rows appeared in `AzureActivity`. I verified that the policy assignment existed, then checked whether the subscription diagnostic setting was actually present. It was missing, so I created the diagnostic setting directly, generated a fresh resource group update event, and confirmed ingestion in the Sentinel workspace with KQL.
