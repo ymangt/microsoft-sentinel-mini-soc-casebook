@@ -6,29 +6,66 @@ AzureActivity
 | where TimeGenerated >= ago(14d)
 | where OperationNameValue in~ (
     "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE",
+    "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/WRITE",
     "MICROSOFT.AUTHORIZATION/ROLEASSIGNMENTS/WRITE",
     "MICROSOFT.COMPUTE/VIRTUALMACHINES/WRITE",
     "MICROSOFT.STORAGE/STORAGEACCOUNTS/WRITE"
 )
 | extend ActivityStatus = coalesce(ActivityStatusValue, ActivityStatus)
-| where ActivityStatus =~ "Success"
+| where ActivityStatus in~ ("Success", "Succeeded", "Accept")
+| extend ParsedProperties = parse_json(Properties)
+| extend
+    RequestBody = tostring(ParsedProperties.requestbody),
+    ResponseBody = tostring(ParsedProperties.responseBody)
+| extend
+    RequestJson = parse_json(RequestBody),
+    ResponseJson = parse_json(ResponseBody)
+| extend
+    RuleName = coalesce(tostring(RequestJson.name), tostring(ResponseJson.name), tostring(ParsedProperties.resource)),
+    RuleAccess = coalesce(tostring(RequestJson.properties.access), tostring(ResponseJson.properties.access)),
+    RuleDirection = coalesce(tostring(RequestJson.properties.direction), tostring(ResponseJson.properties.direction)),
+    RuleProtocol = coalesce(tostring(RequestJson.properties.protocol), tostring(ResponseJson.properties.protocol)),
+    SourceAddressPrefix = coalesce(tostring(RequestJson.properties.sourceAddressPrefix), tostring(ResponseJson.properties.sourceAddressPrefix)),
+    DestinationPortRange = coalesce(tostring(RequestJson.properties.destinationPortRange), tostring(ResponseJson.properties.destinationPortRange))
+| extend IsBroadRdpRule =
+    OperationNameValue =~ "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE"
+    and RuleAccess =~ "Allow"
+    and RuleDirection =~ "Inbound"
+    and DestinationPortRange == "3389"
+    and SourceAddressPrefix in ("*", "Internet", "0.0.0.0/0")
+| where not (
+    OperationNameValue =~ "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE"
+    and ActivityStatus =~ "Success"
+    and isempty(DestinationPortRange)
+)
 | extend
     Severity = case(
         OperationNameValue =~ "MICROSOFT.AUTHORIZATION/ROLEASSIGNMENTS/WRITE", "High",
+        IsBroadRdpRule, "High",
         OperationNameValue =~ "MICROSOFT.NETWORK/NETWORKSECURITYGROUPS/SECURITYRULES/WRITE", "Medium",
         "Low"
     ),
-    AlertReason = strcat("Azure control-plane change observed: ", OperationNameValue)
+    AlertReason = case(
+        IsBroadRdpRule, "Inbound RDP rule allowing broad source was created or modified",
+        strcat("Azure control-plane change observed: ", OperationNameValue)
+    )
 | project
     TimeGenerated,
     Severity,
     AlertReason,
     OperationNameValue,
     ActivityStatus,
+    ActivitySubstatusValue,
     Caller,
     CallerIpAddress,
     ResourceGroup,
     ResourceProviderValue,
+    RuleName,
+    RuleAccess,
+    RuleDirection,
+    RuleProtocol,
+    SourceAddressPrefix,
+    DestinationPortRange,
     ResourceId,
     SubscriptionId,
     CorrelationId,
