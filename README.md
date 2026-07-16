@@ -1,19 +1,17 @@
 # Microsoft Sentinel Mini SOC Casebook
 
-Portfolio lab showing entry-level SOC analyst workflows in Microsoft Sentinel using KQL, safe simulated telemetry, Azure Activity logs, watchlists, and documented incident triage.
+Documented Microsoft Sentinel detection and investigation workflows using KQL, safe simulated telemetry, Azure Activity logs, watchlists, and incident triage case notes.
 
-## Project Goal
+## Analyst Workflow
 
-This lab demonstrates the analyst loop recruiters care about:
+Each scenario follows a repeatable detection and response workflow:
 
 1. Detect suspicious behavior with KQL.
 2. Investigate supporting evidence.
 3. Map activity to MITRE ATT&CK.
 4. Consider false positives and severity.
 5. Recommend containment and response.
-6. Document findings clearly enough for handoff or interview discussion.
-
-The project is intentionally scoped as a mini casebook rather than a huge home lab. It is designed to be finished in 1-2 weeks without unsafe activity or unnecessary Azure cost.
+6. Document findings clearly for incident handoff.
 
 ## Tools
 
@@ -21,7 +19,7 @@ The project is intentionally scoped as a mini casebook rather than a huge home l
 - Log Analytics / Kusto Query Language (KQL)
 - Azure Activity data connector
 - Microsoft Sentinel watchlists
-- GitHub for portfolio documentation
+- GitHub for version control and technical documentation
 
 ## Lab Architecture
 
@@ -90,33 +88,3 @@ References:
 - [Microsoft Sentinel billing](https://learn.microsoft.com/azure/sentinel/billing)
 - [Microsoft Sentinel watchlist queries](https://learn.microsoft.com/azure/sentinel/watchlists-queries)
 - [Microsoft Sentinel in the Defender portal](https://learn.microsoft.com/azure/sentinel/microsoft-sentinel-defender-portal)
-
-## Minimum Publishable Version
-
-- 3 completed scenarios
-- 3 detection KQL files
-- 3 investigation KQL files
-- 3 case notes
-- 6-10 screenshots
-- One polished README with architecture, scenario table, lessons learned, limitations, and resume bullets
-
-## Strong Version
-
-- 4 completed scenarios
-- Analytics rules configured in Sentinel
-- Entity mapping and custom details shown in screenshots
-- Watchlist/custom-table setup documented
-- Clear false-positive tuning notes
-- Interview talking points included
-
-## Overkill To Avoid
-
-- Real malicious payloads
-- Large data ingestion
-- Complex SOAR automation before detections are polished
-- Too many weak detections
-- Huge dashboard work that hides the analyst reasoning
-
-## Resume Bullet Draft
-
-Built a Microsoft Sentinel mini SOC casebook with KQL detections for identity, endpoint, phishing, and Azure Activity scenarios, documenting MITRE ATT&CK mappings, false-positive analysis, triage steps, and response recommendations.
