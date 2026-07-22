@@ -135,6 +135,12 @@ If this happened in a real environment and was not approved:
 | `../screenshots/redacted/day-03-05-det004-detection-results-02.png` | Shows the horizontally scrolled detection output with the correlation ID. |
 | `../screenshots/redacted/day-03-06-det004-investigation-results-01.png` | Shows the investigation query returning the related event timeline. |
 | `../screenshots/redacted/day-03-06-det004-investigation-results-02.png` | Shows the horizontally scrolled investigation output for the same timeline. |
+| `../screenshots/redacted/day-03-07-det004-analytics-rule-review.png` | Shows the validated scheduled analytics rule configuration before saving. |
+| `../screenshots/redacted/day-03-08-det004-enabled-rule.png` | Confirms the scheduled rule is enabled in Sentinel Analytics. |
+| `../screenshots/redacted/day-03-09-det004-unattached-subnets.png` | Confirms the NSG has no associated subnet before live validation. |
+| `../screenshots/redacted/day-03-10-det004-unattached-network-interfaces.png` | Confirms the NSG has no associated network interface before live validation. |
+| `../screenshots/redacted/day-03-11-det004-fresh-rule-write.png` | Shows the authorized description-only rule update that generated fresh telemetry. |
+| `../screenshots/redacted/day-03-12-det004-fresh-event-query.png` | Shows the fresh `Start` and `Accept` Azure Activity events returned by KQL. |
 
 ## Lessons Learned
 

@@ -24,6 +24,10 @@ Use the naming convention documented in `../docs/screenshot-guide.md`.
 | `redacted/day-03-06-det004-investigation-results-02.png` | Shows the horizontally scrolled investigation result columns for the same event timeline. |
 | `redacted/day-03-07-det004-analytics-rule-review.png` | Shows DET-004 configured as an enabled scheduled analytics rule, including its frequency, entity mapping, alert details, and custom evidence fields. |
 | `redacted/day-03-08-det004-enabled-rule.png` | Confirms DET-004 is live in Sentinel Analytics as an enabled high-severity scheduled rule. |
+| `redacted/day-03-09-det004-unattached-subnets.png` | Confirms the lab NSG is not associated with any subnet before the live rule test. |
+| `redacted/day-03-10-det004-unattached-network-interfaces.png` | Confirms the lab NSG is not associated with any network interface before the live rule test. |
+| `redacted/day-03-11-det004-fresh-rule-write.png` | Shows the authorized description-only NSG rule update used to generate fresh validation telemetry. |
+| `redacted/day-03-12-det004-fresh-event-query.png` | Shows the fresh NSG rule write in Sentinel with matching `Start` and `Accept` events. |
 
 Do not commit screenshots that expose:
 
