@@ -22,6 +22,7 @@ Use the naming convention documented in `../docs/screenshot-guide.md`.
 | `redacted/day-03-05-det004-detection-results-02.png` | Shows the horizontally scrolled DET-004 result columns, including the correlation ID. |
 | `redacted/day-03-06-det004-investigation-results-01.png` | Shows the investigation query returning the timeline for the same correlation ID. |
 | `redacted/day-03-06-det004-investigation-results-02.png` | Shows the horizontally scrolled investigation result columns for the same event timeline. |
+| `redacted/day-03-07-det004-analytics-rule-review.png` | Shows DET-004 configured as an enabled scheduled analytics rule, including its frequency, entity mapping, alert details, and custom evidence fields. |
 
 Do not commit screenshots that expose:
 
