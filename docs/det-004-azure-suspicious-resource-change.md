@@ -51,6 +51,14 @@ That matters because the detection row alone says "this looks risky," while the 
 
 The scheduled analytics rule also generated a high-severity Microsoft Sentinel alert and created an incident in the Microsoft Defender portal. The incident was moved to `In progress` while the alert, entities, custom details, and related Azure Activity event were investigated.
 
+For the live incident, the analyst first located the complete correlation ID using the NSG rule name, resource group, and operation type. The follow-up query then returned three records with the same correlation ID:
+
+1. `Start`: Azure Resource Manager began processing the security-rule write.
+2. `Accept`: Azure accepted the requested configuration change.
+3. `Success`: Azure completed the change successfully.
+
+This sequence confirmed that the alert represented a completed Azure control-plane change rather than only an attempted or failed request.
+
 ## Expected Output Fields
 
 - `TimeGenerated`
@@ -146,12 +154,15 @@ If this happened in a real environment and was not approved:
 | `../screenshots/redacted/day-03-14-det004-incident-attack-story.png` | Shows the generated high-severity incident and its entity graph in Microsoft Defender. |
 | `../screenshots/redacted/day-03-15-det004-alert-details.png` | Shows the alert details, related event, activity time, detection source, and workspace. |
 | `../screenshots/redacted/day-03-16-det004-incident-details.png` | Shows the incident in progress with custom evidence fields and impacted asset context. |
+| `../screenshots/redacted/day-03-17-det004-correlation-locator.png` | Shows the shared correlation ID across the live event's three Azure Activity states. |
+| `../screenshots/redacted/day-03-18-det004-correlated-timeline.png` | Shows the correlated `Start`, `Accept`, and `Success` investigation timeline. |
 
 ## Lessons Learned
 
 - Azure Activity events may use status values such as `Accept`, not only `Success`, so detection logic should account for both.
 - Useful NSG rule details are nested inside the `Properties` JSON field, so parsing is required to extract the rule name, direction, access, source, protocol, and port.
 - A single portal action can create multiple related Azure Activity rows. The `CorrelationId` is important for connecting them.
+- The `Success` record confirmed that the risky configuration change completed; relying only on the earlier `Start` or `Accept` record would leave the final outcome uncertain.
 - Portal result tables often require horizontal scrolling, so paired screenshots can be clearer than one overly cropped screenshot.
 - A scheduled rule can successfully generate an alert and incident even when the preview-only Rule Runs panel has no records. Rule execution health telemetry is a separate monitoring feature.
 
