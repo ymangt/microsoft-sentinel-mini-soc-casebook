@@ -33,6 +33,8 @@ Use the naming convention documented in `../docs/screenshot-guide.md`.
 | `redacted/day-03-16-det004-incident-details.png` | Shows the incident in progress with the rule name, source prefix, destination port, and impacted asset context. |
 | `redacted/day-03-17-det004-correlation-locator.png` | Shows the analyst locating the shared correlation ID across the `Start`, `Accept`, and `Success` records. |
 | `redacted/day-03-18-det004-correlated-timeline.png` | Shows the investigation query reconstructing the completed NSG rule-write timeline while sensitive identity and IP fields remain redacted. |
+| `redacted/day-03-19-det004-analyst-comment.png` | Shows the documented analyst findings, exposure assessment, recommended disposition, and response guidance. |
+| `redacted/day-03-20-det004-rdp-rule-removed.png` | Confirms that the broad inbound RDP rule was deleted and only the default NSG rules remain. |
 
 Do not commit screenshots that expose:
 

@@ -59,6 +59,8 @@ For the live incident, the analyst first located the complete correlation ID usi
 
 This sequence confirmed that the alert represented a completed Azure control-plane change rather than only an attempted or failed request.
 
+The analyst documented the investigation in the incident history, including the correlated event sequence, the unattached status of the NSG, the absence of workload exposure, and the recommended disposition. As containment and cleanup, the broad inbound RDP rule was deleted after validation.
+
 ## Expected Output Fields
 
 - `TimeGenerated`
@@ -156,6 +158,8 @@ If this happened in a real environment and was not approved:
 | `../screenshots/redacted/day-03-16-det004-incident-details.png` | Shows the incident in progress with custom evidence fields and impacted asset context. |
 | `../screenshots/redacted/day-03-17-det004-correlation-locator.png` | Shows the shared correlation ID across the live event's three Azure Activity states. |
 | `../screenshots/redacted/day-03-18-det004-correlated-timeline.png` | Shows the correlated `Start`, `Accept`, and `Success` investigation timeline. |
+| `../screenshots/redacted/day-03-19-det004-analyst-comment.png` | Shows the investigation findings and response recommendation recorded in the incident history. |
+| `../screenshots/redacted/day-03-20-det004-rdp-rule-removed.png` | Confirms removal of the broad inbound RDP rule after validation. |
 
 ## Lessons Learned
 
@@ -163,6 +167,7 @@ If this happened in a real environment and was not approved:
 - Useful NSG rule details are nested inside the `Properties` JSON field, so parsing is required to extract the rule name, direction, access, source, protocol, and port.
 - A single portal action can create multiple related Azure Activity rows. The `CorrelationId` is important for connecting them.
 - The `Success` record confirmed that the risky configuration change completed; relying only on the earlier `Start` or `Accept` record would leave the final outcome uncertain.
+- Removing the test rule after validation completed the response lifecycle and demonstrated that temporary risky configurations should not be left in place.
 - Portal result tables often require horizontal scrolling, so paired screenshots can be clearer than one overly cropped screenshot.
 - A scheduled rule can successfully generate an alert and incident even when the preview-only Rule Runs panel has no records. Rule execution health telemetry is a separate monitoring feature.
 
