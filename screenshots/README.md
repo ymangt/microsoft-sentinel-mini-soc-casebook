@@ -28,6 +28,9 @@ Use the naming convention documented in `../docs/screenshot-guide.md`.
 | `redacted/day-03-10-det004-unattached-network-interfaces.png` | Confirms the lab NSG is not associated with any network interface before the live rule test. |
 | `redacted/day-03-11-det004-fresh-rule-write.png` | Shows the authorized description-only NSG rule update used to generate fresh validation telemetry. |
 | `redacted/day-03-12-det004-fresh-event-query.png` | Shows the fresh NSG rule write in Sentinel with matching `Start` and `Accept` events. |
+| `redacted/day-03-14-det004-incident-attack-story.png` | Shows the high-severity incident and its linked account and network entities in the Defender incident graph. |
+| `redacted/day-03-15-det004-alert-details.png` | Shows the scheduled detection alert, related event, severity, activity time, and workspace details. |
+| `redacted/day-03-16-det004-incident-details.png` | Shows the incident in progress with the rule name, source prefix, destination port, and impacted asset context. |
 
 Do not commit screenshots that expose:
 

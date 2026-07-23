@@ -49,6 +49,8 @@ The investigation query uses the alert `CorrelationId` to pull the related Azure
 
 That matters because the detection row alone says "this looks risky," while the investigation query confirms the related event chain and shows whether Azure accepted and completed the change.
 
+The scheduled analytics rule also generated a high-severity Microsoft Sentinel alert and created an incident in the Microsoft Defender portal. The incident was moved to `In progress` while the alert, entities, custom details, and related Azure Activity event were investigated.
+
 ## Expected Output Fields
 
 - `TimeGenerated`
@@ -141,6 +143,9 @@ If this happened in a real environment and was not approved:
 | `../screenshots/redacted/day-03-10-det004-unattached-network-interfaces.png` | Confirms the NSG has no associated network interface before live validation. |
 | `../screenshots/redacted/day-03-11-det004-fresh-rule-write.png` | Shows the authorized description-only rule update that generated fresh telemetry. |
 | `../screenshots/redacted/day-03-12-det004-fresh-event-query.png` | Shows the fresh `Start` and `Accept` Azure Activity events returned by KQL. |
+| `../screenshots/redacted/day-03-14-det004-incident-attack-story.png` | Shows the generated high-severity incident and its entity graph in Microsoft Defender. |
+| `../screenshots/redacted/day-03-15-det004-alert-details.png` | Shows the alert details, related event, activity time, detection source, and workspace. |
+| `../screenshots/redacted/day-03-16-det004-incident-details.png` | Shows the incident in progress with custom evidence fields and impacted asset context. |
 
 ## Lessons Learned
 
@@ -148,10 +153,11 @@ If this happened in a real environment and was not approved:
 - Useful NSG rule details are nested inside the `Properties` JSON field, so parsing is required to extract the rule name, direction, access, source, protocol, and port.
 - A single portal action can create multiple related Azure Activity rows. The `CorrelationId` is important for connecting them.
 - Portal result tables often require horizontal scrolling, so paired screenshots can be clearer than one overly cropped screenshot.
+- A scheduled rule can successfully generate an alert and incident even when the preview-only Rule Runs panel has no records. Rule execution health telemetry is a separate monitoring feature.
 
 ## Limitations
 
 - This lab used an unattached NSG, so no real VM exposure occurred.
-- This scenario did not generate a Microsoft Defender for Cloud recommendation or incident yet.
+- The Rule Runs preview did not display execution records because analytics-rule health monitoring was not available for the workspace during this test. The generated alert and incident independently confirm that the rule executed.
 - Caller identity and public IP values are redacted in public screenshots.
 - The query is intentionally beginner-to-intermediate and should be tuned before use in a production SOC.

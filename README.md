@@ -42,7 +42,7 @@ Azure Activity connector  --->  AzureActivity table  --->  Cloud activity scenar
 | DET-001 | Password spray against multiple accounts | Identify repeated authentication failures from one source IP across multiple accounts | `lab_identity_signins` watchlist or custom table | Planned |
 | DET-002 | Suspicious PowerShell execution | Detect encoded/download-style PowerShell behavior and investigate process context | `lab_endpoint_processes` watchlist or custom table | Planned |
 | DET-003 | Phishing URL triage | Match email URLs against a suspicious-domain watchlist and document impact | `lab_email_url_events` + `lab_suspicious_domains` watchlists | Planned |
-| [DET-004](docs/det-004-azure-suspicious-resource-change.md) | Suspicious Azure resource change | Investigate risky Azure Activity operations such as NSG rule writes or role assignment changes | `AzureActivity` | Detection and investigation evidence captured |
+| [DET-004](docs/det-004-azure-suspicious-resource-change.md) | Suspicious Azure resource change | Investigate risky Azure Activity operations such as NSG rule writes or role assignment changes | `AzureActivity` | Scheduled rule and incident validated |
 
 ## Repository Structure
 
