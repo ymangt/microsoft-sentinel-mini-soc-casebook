@@ -61,6 +61,8 @@ This sequence confirmed that the alert represented a completed Azure control-pla
 
 The analyst documented the investigation in the incident history, including the correlated event sequence, the unattached status of the NSG, the absence of workload exposure, and the recommended disposition. As containment and cleanup, the broad inbound RDP rule was deleted after validation.
 
+The incident was then resolved as `Informational, expected activity - Security testing`. The portal summarized the disposition as a benign positive: the analytics rule correctly detected the risky configuration, but the underlying action was an authorized security test rather than malicious activity.
+
 ## Expected Output Fields
 
 - `TimeGenerated`
@@ -160,6 +162,7 @@ If this happened in a real environment and was not approved:
 | `../screenshots/redacted/day-03-18-det004-correlated-timeline.png` | Shows the correlated `Start`, `Accept`, and `Success` investigation timeline. |
 | `../screenshots/redacted/day-03-19-det004-analyst-comment.png` | Shows the investigation findings and response recommendation recorded in the incident history. |
 | `../screenshots/redacted/day-03-20-det004-rdp-rule-removed.png` | Confirms removal of the broad inbound RDP rule after validation. |
+| `../screenshots/redacted/day-03-21-det004-incident-resolved.png` | Shows the resolved incident, security-testing classification, benign-positive summary, and resolution explanation. |
 
 ## Lessons Learned
 
@@ -168,6 +171,8 @@ If this happened in a real environment and was not approved:
 - A single portal action can create multiple related Azure Activity rows. The `CorrelationId` is important for connecting them.
 - The `Success` record confirmed that the risky configuration change completed; relying only on the earlier `Start` or `Accept` record would leave the final outcome uncertain.
 - Removing the test rule after validation completed the response lifecycle and demonstrated that temporary risky configurations should not be left in place.
+- Incident status and classification describe different parts of the outcome. `Resolved` closes the workflow, while `Informational, expected activity - Security testing` records that the detection was accurate and the activity was authorized.
+- An accurate alert caused by an approved test is not a false positive. Classifying it as expected security-testing activity preserves confidence in the detection logic.
 - Portal result tables often require horizontal scrolling, so paired screenshots can be clearer than one overly cropped screenshot.
 - A scheduled rule can successfully generate an alert and incident even when the preview-only Rule Runs panel has no records. Rule execution health telemetry is a separate monitoring feature.
 
